@@ -46,7 +46,7 @@ jobs:
       with:
         registry: ${{ env.CONTAINER_REPOSITORY }}
         username: ${{ github.actor }} 
-        password: a123bc456 
+        password: Lostmagic22!
 
     - name: Build and push image
       if: ${{ github.event_name != 'pull_request' }}
