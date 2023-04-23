@@ -10,7 +10,7 @@ on:
     branches: [ "main" ]
 
 env:
-  APP_NAME: client-test-action
+  APP_NAME: bestborirak-client-test-action
   CONTAINER_REPOSITORY: "ghcr.io"
   OWNER_NAME: "bestborirak"
   IMAGE_TAG: "0.0.1-SNAPSHOT"
@@ -46,7 +46,7 @@ jobs:
       with:
         registry: ${{ env.CONTAINER_REPOSITORY }}
         username: ${{ github.actor }} 
-        password: Lostmagic22!
+        password: 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
 
     - name: Build and push image
       if: ${{ github.event_name != 'pull_request' }}
