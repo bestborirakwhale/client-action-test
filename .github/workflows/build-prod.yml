@@ -1,13 +1,23 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-name: Node.js CI
+name: MAIN - Build
 
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+
+env:
+  APP_NAME: client-test-action
+  CONTAINER_REPOSITORY: "ghcr.io"
+  OWNER_NAME: "bestborirak"
+  IMAGE_TAG: "0.0.1-SNAPSHOT"
+  # ANGULAR_CLI_VERSION: "1.0.0-rc.1"
+  # BUILD_UTIL_REPO: "corp-ais/mychannel-build-util"
+  GIT_BRANCH: "main"
+  # APP_PATH: "sales-portal"
 
 jobs:
   build:
@@ -29,3 +39,22 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
+
+    - name: "GHCR login"
+      if: ${{ github.event_name != 'pull_request' }}
+      uses: docker/login-action@v2
+      with:
+        registry: ${{ env.CONTAINER_REPOSITORY }}
+        username: ${{ github.actor }} 
+        password: ${{ a123bc456 }}
+
+    - name: Build and push image
+      if: ${{ github.event_name != 'pull_request' }}
+      uses: docker/build-push-action@v3
+      with:
+        context: ./
+        file: ./Dockerfile-client
+        push: true
+        tags: ${{ env.CONTAINER_REPOSITORY }}/${{ env.OWNER_NAME }}/${{ env.APP_NAME }}:${{env.IMAGE_TAG}}
+
+    
